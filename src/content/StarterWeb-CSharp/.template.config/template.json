@@ -1,17 +1,17 @@
 {
   "$schema": "http://json.schemastore.org/template",
-  "author": "Microsoft",
+  "author": "Microsoft, Scott Stephens",
   "classifications": [
     "Web",
     "MVC"
   ],
-  "name": "ASP.NET Core Web App (Model-View-Controller)",
+  "name": "ASP.NET Core Web App MVC with npm, webpack, and bootstrap",
   "generatorVersions": "[1.0.0.0-*)",
   "description": "A project template for creating an ASP.NET Core application with example ASP.NET Core MVC Views and Controllers. This template can also be used for RESTful HTTP services.",
-  "groupIdentity": "Microsoft.Web.Mvc",
+  "groupIdentity": "ScottStephens.DotnetTemplates",
   "precedence": "7000",
-  "identity": "Microsoft.Web.Mvc.CSharp.5.0",
-  "shortName": "mvc",
+  "identity": "ScottStephens.DotnetTemplates",
+  "shortName": "ssmvc",
   "thirdPartyNotices": "https://aka.ms/aspnetcore/5.0-third-party-notices",
   "tags": {
     "language": "C#",
