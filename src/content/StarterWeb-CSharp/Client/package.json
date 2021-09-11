@@ -3,11 +3,11 @@
   "name": "Company.WebApplication1.Client",
   "private": true,
   "dependencies": {
-	"bootstrap": "4.3.1",
-	"popper.js": "1.16.1",
-    "jquery": "3.5.1",
-    "jquery-validation": "1.17.0",
-    "jquery-validation-unobtrusive": "3.2.11"
+	"bootstrap": "^5.0.0",
+    "@popperjs/core": "^2.0.0",
+    "jquery": "^3.4.1",
+    "jquery-validation": "^1.19.1",
+    "jquery-validation-unobtrusive": "^3.2.11"
   },
   "devDependencies": {
     "webpack": "^5.0.0",
