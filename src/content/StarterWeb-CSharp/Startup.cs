@@ -21,9 +21,12 @@ using Microsoft.AspNetCore.HttpsPolicy;
 #if (OrganizationalAuth)
 using Microsoft.AspNetCore.Mvc.Authorization;
 #endif
-#if (IndividualLocalAuth)
+#if (UseDB)
 using Microsoft.EntityFrameworkCore;
 using Company.WebApplication1.Data;
+#endif
+#if (UsePostgreSQL)
+using Npgsql;
 #endif
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,23 +52,31 @@ namespace Company.WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-#if (IndividualLocalAuth)
+#if (UsePostgreSQL)
+        NpgsqlConnection.GlobalTypeMapper.UseNodaTime();
+#endif
+
+#if (UseDB)
             services.AddDbContext<ApplicationDbContext>(options =>
 #if (UseLocalDB)
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-#else
+#elseif (UseSqliteFinal)
                 options.UseSqlite(
+                    Configuration.GetConnectionString("DefaultConnection")));
+#elseif (UsePostgreSQL)
+                options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
 #endif
             services.AddDatabaseDeveloperPageExceptionFilter();
+#endif
 
+#if IndividualLocalAuth
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 #elif (OrganizationalAuth)
 #if (GenerateApiOrGraph)
             var initialScopes = Configuration.GetValue<string>("DownstreamApi:Scopes")?.Split(' ');
-
 #endif
             services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 #if (GenerateApiOrGraph)

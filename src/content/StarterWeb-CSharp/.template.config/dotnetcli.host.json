@@ -4,6 +4,12 @@
     "UseLocalDB": {
       "longName": "use-local-db"
     },
+    "UsePostgreSQL": {
+      "longName": "use-postgresql"
+    },
+    "UseSqlite": {
+      "longName": "use-sqlite"
+    },
     "AADInstance": {
       "longName": "aad-instance",
       "shortName": ""

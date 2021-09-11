@@ -47,22 +47,17 @@
     <RemoveDir Directories="$(WWWRoot)dist" />
   </Target>
 
-  <!--#if (IndividualLocalAuth && !UseLocalDB) -->
-
+  <!--#if (IndividualLocalAuth && UseSqliteFinal) -->
   <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
   </ItemGroup>
   <!--#endif -->
-  <!--#if (IndividualB2CAuth || IndividualLocalAuth || OrganizationalAuth || RazorRuntimeCompilation) -->
 
+  <!--#if (IndividualB2CAuth || IndividualLocalAuth || OrganizationalAuth || RazorRuntimeCompilation) -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.9" Condition=" '$(IndividualLocalAuth)' == 'True' " />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.9" Condition=" '$(IndividualLocalAuth)' == 'True' " />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.9" Condition=" '$(IndividualLocalAuth)' == 'True' " />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.9" Condition="'$(RazorRuntimeCompilation)' == 'True'" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.9" Condition=" '$(IndividualLocalAuth)' == 'True' AND '$(UseLocalDB)' == 'True'" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.9" Condition=" '$(IndividualLocalAuth)' == 'True' AND '$(UseLocalDB)' != 'True'" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.9" Condition=" '$(IndividualLocalAuth)' == 'True' " />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" Condition=" '$(IndividualB2CAuth)' == 'True' OR '$(OrganizationalAuth)' == 'True'" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.9" Condition=" '$(IndividualB2CAuth)' == 'True' OR '$(OrganizationalAuth)' == 'True'" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.Identity.Web" Version="1.1.0" Condition=" '$(IndividualB2CAuth)' == 'True' OR '$(OrganizationalAuth)' == 'True'" />
@@ -71,4 +66,25 @@
   </ItemGroup>
   <!--#endif -->
 
+  <ItemGroup>
+    <!--#if (UseLocalDB) -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.9" Condition=" '$(IndividualLocalAuth)' == 'True' AND '$(UseLocalDB)' == 'True'" />
+    <!--#endif -->
+
+    <!--#if (UsePostgreSQL) -->
+    <PackageReference Include="NodaTime" Version="3.0.5" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="5.0.7" />
+    <!--#endif -->
+
+    <!--#if (UseSqliteFinal) -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.9" />
+    <!--#endif -->
+
+    <!--#if (UseLocalDB || UsePostgreSQL || UseSqliteFinal) -->
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.9" />
+    <!--#endif -->
+  </ItemGroup>
 </Project>

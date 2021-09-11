@@ -55,16 +55,23 @@
           ]
         },
         {
-          "condition": "(!IndividualLocalAuth || UseLocalDB)",
+          "condition": "(!IndividualLocalAuth || UseLocalDB || UsePostgreSQL)",
           "exclude": [
             "app.db"
           ]
         },
         {
+          "condition": "(!UseDB)",
+          "exclude": [
+            "Data/ApplicationDbContext.cs"
+          ]
+        },
+        {
           "condition": "(!IndividualLocalAuth)",
           "exclude": [
-            "Data/**",
-            "Areas/**"
+            "Areas/**",
+            "Data/SqlLite/**",
+            "Data/SqlServer/**"
           ]
         },
         {
@@ -83,11 +90,18 @@
           ]
         },
         {
-          "condition": "(IndividualLocalAuth && !UseLocalDB)",
+          "condition": "(IndividualLocalAuth && UseSqliteFinal)",
           "rename": {
             "Data/SqlLite/": "Data/Migrations/"
           },
           "exclude": [
+            "Data/SqlServer/**"
+          ]
+        },
+        {
+          "condition": "(UsePostgreSQL)",
+          "exclude": [
+            "Data/SqlLite/**",
             "Data/SqlServer/**"
           ]
         }
@@ -300,6 +314,30 @@
       "datatype": "bool",
       "defaultValue": "false",
       "description": "Whether to use LocalDB instead of SQLite. This option only applies if --auth Individual or --auth IndividualB2C is specified."
+    },
+    "UsePostgreSQL": {
+        "type": "parameter",
+        "datatype": "bool",
+        "defaultValue": "false",
+        "description": "Whether to use PostgreSQL."
+    },
+    "NeedDB": {
+        "type": "computed",
+        "value": "(!NoAuth)"
+    },
+    "UseSqlite": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Whether to use SQLite."
+    },
+    "UseSqliteFinal": {
+        "type": "computed",
+        "value": "(UseSqlite || (NeedDB && !UseLocalDB && !UsePostgreSQL))"
+    },
+    "UseDB": {
+        "type": "computed",
+        "value": "(UseSqliteFinal || UseLocalDB || UsePostgreSQL)"
     },
     "RazorRuntimeCompilation": {
       "type": "parameter",
